@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+package spiri;
+
+service Spiri {
+    rpc ReverseGeocode(ReverseGeocodeRequest) returns (Location) {}
+    rpc SearchPlaces(SearchPlacesRequest) returns (Places) {}
+}
+
+message ReverseGeocodeRequest {
+    double Lat = 1;
+    double Lng = 2;
+}
+
+message Location {
+    double Lat = 1;
+    double Lng = 2;
+    string AddressString = 3;
+}
+
+message SearchPlacesRequest {
+    double Lat = 1;
+    double Lng = 2;
+    string Query = 3;
+}
+
+message Places {
+    repeated Location Locations = 1;
+}
