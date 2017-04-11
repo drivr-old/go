@@ -13,9 +13,9 @@ Inspired by http://manuel.kiessling.net/2012/09/28/applying-the-clean-architectu
 
 Main points:
 - Packages (layers) that import one another from top to bottom:
--- External
--- Services
--- Domain
+  * External
+  * Services
+  * Domain
 - Interfaces are defined on the receiving side (lower layer) to avoid circular dependencies
 - Higher layers implement interfaces defined in lower levels
 - Main application creates all dependencies and passes them downwards
