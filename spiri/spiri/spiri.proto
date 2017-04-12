@@ -8,22 +8,22 @@ service Spiri {
 }
 
 message ReverseGeocodeRequest {
-    double Lat = 1;
-    double Lng = 2;
+    double lat = 1;
+    double lng = 2;
 }
 
 message Location {
-    double Lat = 1;
-    double Lng = 2;
-    string AddressString = 3;
+    double lat = 1;
+    double lng = 2;
+    string address_string = 3;
 }
 
 message SearchPlacesRequest {
-    double Lat = 1;
-    double Lng = 2;
-    string Query = 3;
+    double lat = 1;
+    double lng = 2;
+    string query = 3;
 }
 
 message Places {
-    repeated Location Locations = 1;
+    repeated Location locations = 1;
 }
