@@ -6,7 +6,7 @@ import (
 	"net/http"
 	"testing"
 
-	"github.com/drivr/go/spiri/domain"
+	"github.com/drivr/go/spiri/domain/mock_domain"
 	dp "github.com/drivr/go/spiri/domain/place"
 	"github.com/drivr/go/spiri/external/api/public/mock_public"
 	"github.com/golang/mock/gomock"
@@ -19,7 +19,7 @@ func TestQuery(t *testing.T) {
 
 	// Setup
 	httpClient := mock_public.NewMockhttpClient(testCtrl)
-	logger := domain.NewMockLogger(testCtrl)
+	logger := mock_domain.NewMockLogger(testCtrl)
 	repo := NewPlaceRepository(httpClient, logger)
 	var searchRequest, placeRequest *http.Request
 	httpClient.EXPECT().Do(gomock.Any()).Do(func(req *http.Request) { searchRequest = req }).Return(getSearchResponse(), nil)

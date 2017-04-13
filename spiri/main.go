@@ -12,13 +12,14 @@ import (
 	"time"
 
 	papi "github.com/drivr/go/spiri/external/api/public"
-	spiriGrpc "github.com/drivr/go/spiri/external/grpc"
 	"github.com/drivr/go/spiri/external/log"
+	pb "github.com/drivr/go/spiri/pb"
+	"github.com/drivr/go/spiri/services"
 	"github.com/drivr/go/spiri/services/place"
-	pb "github.com/drivr/go/spiri/spiri"
 )
 
 var (
+	// TODO: extract to config
 	port = flag.Int("port", 10000, "The server port")
 )
 
@@ -37,7 +38,15 @@ func run(port int, stop chan struct{}) {
 	}
 	var opts []grpc.ServerOption
 	grpcServer := grpc.NewServer(opts...)
-	pb.RegisterSpiriServer(grpcServer, createSpiriServer())
+
+	placeService := createPlaceService()
+
+	endpoints := services.Endpoints{
+		PlacesSearchEndpoint: place.MakeSearchEndpoint(placeService),
+	}
+	spiriServer := services.MakeGRPCServer(endpoints)
+	pb.RegisterSpiriServer(grpcServer, spiriServer)
+
 	go func() {
 		go grpcServer.Serve(lis)
 		<-stop
@@ -45,13 +54,10 @@ func run(port int, stop chan struct{}) {
 	}()
 }
 
-func createSpiriServer() *spiriGrpc.SpiriServer {
+func createPlaceService() place.Service {
 	client := &http.Client{Timeout: 30 * time.Second}
 	logger := log.New()
-
 	placeRepository := papi.NewPlaceRepository(client, logger)
 
-	return spiriGrpc.New(
-		place.NewService(placeRepository, logger),
-	)
+	return place.NewService(placeRepository, logger)
 }

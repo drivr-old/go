@@ -9,10 +9,10 @@ import (
 
 	linq "github.com/ahmetb/go-linq"
 
-	pb "github.com/drivr/go/spiri/spiri"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/grpclog"
 
+	pb "github.com/drivr/go/spiri/pb"
 	"github.com/stretchr/testify/assert"
 )
 

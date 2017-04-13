@@ -34,8 +34,5 @@ func TestSearch(t *testing.T) {
 	resp, err := svc.Search(req)
 
 	assert.Nil(t, err)
-	assert.NotNil(t, resp)
-	assert.Equal(t, places[0].Name, resp.Locations[0].AddressString)
-	assert.Equal(t, places[0].Lat, resp.Locations[0].Lat)
-	assert.Equal(t, places[0].Lng, resp.Locations[0].Lng)
+	assert.Equal(t, places, resp)
 }
