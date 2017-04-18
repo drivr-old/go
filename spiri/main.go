@@ -5,6 +5,9 @@ import (
 	"fmt"
 	"net"
 	"net/http"
+	"os"
+	"os/signal"
+	"syscall"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/grpclog"
@@ -27,8 +30,18 @@ func main() {
 	flag.Parse()
 
 	stop := make(chan struct{}, 1)
+	errs := make(chan error)
+
+	go func() {
+		c := make(chan os.Signal, 1)
+		signal.Notify(c, syscall.SIGINT, syscall.SIGTERM)
+		errs <- fmt.Errorf("%s", <-c)
+		stop <- struct{}{}
+	}()
 
 	run(*port, stop)
+
+	<-errs
 }
 
 func run(port int, stop chan struct{}) {
